@@ -23,9 +23,6 @@ function Home() {
       {user ? (
         <div className="flex flex-col gap-2">
           <p>Welcome back, {user.name}!</p>
-          <Button type="button" asChild className="w-fit" size="lg">
-            <Link to="/dashboard">Go to Dashboard</Link>
-          </Button>
           <div>
             More data:
             <pre>{JSON.stringify(user, null, 2)}</pre>
@@ -47,8 +44,15 @@ function Home() {
       ) : (
         <div className="flex flex-col gap-2">
           <p>You are not signed in.</p>
-          <Button type="button" asChild className="w-fit" size="lg">
-            <Link to="/signin">Sign in</Link>
+          <Button
+            onClick={() => {
+              authClient.signIn.social({ provider: "google" });
+            }}
+            type="button"
+            variant="outline"
+            size="lg"
+          >
+            Sign in with Google
           </Button>
         </div>
       )}

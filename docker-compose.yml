@@ -1,0 +1,30 @@
+# Use postgres/example user/password credentials
+services:
+  db:
+    container_name: MealPlannerDB
+    user: root
+    image: bitnami/postgresql:latest
+    restart: unless-stopped
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    environment:
+      - POSTGRESQL_PORT_NUMBER=3233
+      - POSTGRESQL_PASSWORD=bhayanak
+    ports:
+      - 3233:3233
+    volumes:
+      - ./pgdata:/bitnami/postgresql
+
+  mealplanner:
+    container_name: MealPlannerApp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgresql://postgres:bhayanak@db:3233
