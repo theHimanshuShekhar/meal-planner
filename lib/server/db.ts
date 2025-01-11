@@ -3,8 +3,6 @@ import postgres from "postgres";
 
 import * as schema from "./schema";
 
-console.log(process.env);
-
 const driver = postgres(process.env.DATABASE_URL as string);
 export const db = drizzle({ client: driver, schema });
 

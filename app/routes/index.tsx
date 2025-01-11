@@ -1,5 +1,6 @@
-import { Link, createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Button } from "~/lib/components/ui/button";
+import type { User } from "~/lib/server/db";
 import authClient from "~/lib/utils/auth-client";
 
 export const Route = createFileRoute("/")({
@@ -12,19 +13,26 @@ function Home() {
 
   return (
     <div className="flex flex-col gap-4 p-6">
-      <h1 className="text-4xl font-bold">TanStarter</h1>
-      <div className="flex items-center gap-2">
-        This is an unprotected page:
-        <pre className="rounded-md border bg-card p-1 text-card-foreground">
-          routes/index.tsx
-        </pre>
-      </div>
+      <h1 className="text-4xl font-bold">Meal Planner</h1>
+      <UserButton user={user} router={router} />
+    </div>
+  );
+}
 
+function UserButton({
+  user,
+  router,
+}: {
+  user: User;
+  router: ReturnType<typeof useRouter>;
+}) {
+  return (
+    <>
       {user ? (
         <div className="flex flex-col gap-2">
-          <p>Welcome back, {user.name}!</p>
+          <p>{user.name}</p>
           <div>
-            More data:
+            User data:
             <pre>{JSON.stringify(user, null, 2)}</pre>
           </div>
 
@@ -56,15 +64,6 @@ function Home() {
           </Button>
         </div>
       )}
-
-      <a
-        className="text-muted-foreground underline hover:text-foreground"
-        href="https://github.com/dotnize/tanstarter"
-        target="_blank"
-        rel="noreferrer noopener"
-      >
-        dotnize/tanstarter
-      </a>
-    </div>
+    </>
   );
 }
